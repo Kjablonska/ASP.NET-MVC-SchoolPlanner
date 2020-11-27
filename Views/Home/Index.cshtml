@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Table"] = "School Planner";
+
+    string[] ColumnsHeaders = new string[] {
+        ""
+        ,"Monday"
+        ,"Tuesday"
+        ,"Wednesday"
+        ,"Thursday"
+        ,"Friday"
+    };
+
+    string[] RowsHeaders = new string[] {
+        "8:00-8:45"
+        ,"8:55-9:40"
+        ,"9:50-11:35"
+        ,"11:55-12:40"
+        ,"12:50-13:35"
+        ,"13:45-14:30"
+        ,"14:40-15:25"
+        ,"15:35-16:20"
+        ,"16:30-17:15"
+    };
+
+}
+
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                @{
+                    foreach (var col in ColumnsHeaders)
+                    {
+                        <th>
+                            @col
+                        </th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @{
+                    foreach (var row in RowsHeaders)
+                    {
+                        <th>
+                            @row
+                        <tr>
+                        </tr></th>
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
