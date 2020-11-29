@@ -21,6 +21,7 @@ namespace SchoolPlanner.Controllers
         public IActionResult Index()
         {
             SchoolPlannerModel schoolPlanner = new SchoolPlannerModel();
+            schoolPlanner.deserializeJsonFile();
 
             return View(schoolPlanner);
         }

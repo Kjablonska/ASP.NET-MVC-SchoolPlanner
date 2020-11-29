@@ -1,0 +1,53 @@
+{
+    "activities": [
+        {
+            "clas": "mat",
+            "day": "Monday",
+            "group": "1a",
+            "room": "110",
+            "slot": 1,
+            "teacher": "kowalski"
+        },
+        {
+            "clas": "eng",
+            "day": "Friday",
+            "group": "1c",
+            "room": "121",
+            "slot": 3,
+            "teacher": "nowak"
+        }
+    ],
+    "classes": [
+        "mat",
+        "geo",
+        "eng",
+        "phys",
+        "biol"
+    ],
+    "groups": [
+        "1a",
+        "1b",
+        "1c",
+        "2a",
+        "2b",
+        "3a",
+        "3b",
+        "4a",
+        "4b"
+    ],
+    "rooms": [
+        "110",
+        "111",
+        "120",
+        "121"
+    ],
+    "teachers": [
+        "kowalski",
+        "nowak",
+        "smith",
+        "clarkson",
+        "may",
+        "hammond",
+        "atkinson"
+    ]
+}

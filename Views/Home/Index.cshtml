@@ -36,7 +36,6 @@
                 foreach (var room in @Model.getRoomList() ?? new List<string>()) {
                     <option>@room</option>
                 }
-
                 currentRoom = @Model.getRoomList().First();
             }
 
