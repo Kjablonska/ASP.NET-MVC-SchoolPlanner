@@ -1,4 +1,7 @@
-﻿@{
+﻿@model SchoolPlannerModel
+@{
+    string currentRoom = "0";
+
     ViewData["Table"] = "School Planner";
 
     string[] ColumnsHeaders = new string[] {
@@ -21,10 +24,28 @@
         ,"15:35-16:20"
         ,"16:30-17:15"
     };
-
 }
 
+<body>
+
+<div class = "roomSelection">
+    Room&nbsp;&nbsp;
+    <select onchange="currentRoom = this.value;">
+        @{
+            if (@Model.getRoomList() != null && !@Model.getRoomList().Any()) {
+                foreach (var room in @Model.getRoomList() ?? new List<string>()) {
+                    <option>@room</option>
+                }
+
+                currentRoom = @Model.getRoomList().First();
+            }
+
+        }
+    </select>
+</div>
+
 <div class="table-responsive">
+    &nbsp;
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -41,15 +62,25 @@
         <tbody>
             <tr>
                 @{
-                    foreach (var row in RowsHeaders)
+                    for (var slot = 0; slot < RowsHeaders.Length; slot++)
                     {
                         <th>
-                            @row
-                        <tr>
-                        </tr></th>
+                            @RowsHeaders[slot]
+                            @{
+                                for (var day = 0; day < ColumnsHeaders.Length - 1; day++) {
+                                    <td ondblclick="window.location='Home/EditDictionary'">
+                                        @Model.getActivityByRoomAndSlot(currentRoom, slot, ColumnsHeaders[day]);
+                                    </td>
+                                }
+                            }
+                        <tr></tr>
+                        </th>
                     }
                 }
             </tr>
         </tbody>
     </table>
 </div>
+
+
+</body>

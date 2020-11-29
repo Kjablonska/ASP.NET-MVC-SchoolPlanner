@@ -1,6 +1,6 @@
-namespace SchoolPlanner.Models
+namespace ActivityData.Models
 {
-    public class ActivityModel
+    public class ActivityDataModel
     {
         private string room;
         private string group;
@@ -9,7 +9,8 @@ namespace SchoolPlanner.Models
         private string day;
         private string teacher;
 
-        public ActivityModel(string room, string group, string clas, int slot, string day, string teacher)
+        public ActivityDataModel() {}
+        public ActivityDataModel(string room, string group, string clas, int slot, string day, string teacher)
         {
             this.room = room;
             this.group = group;

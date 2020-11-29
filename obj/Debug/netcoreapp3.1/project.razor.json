@@ -14425,6 +14425,11 @@
       "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/Home/Index.cshtml",
       "TargetPath": "Views\\Home\\Index.cshtml",
       "FileKind": "mvc"
+    },
+    {
+      "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/Home/EditDictionary.cshtml",
+      "TargetPath": "Views\\Home\\EditDictionary.cshtml",
+      "FileKind": "mvc"
     }
   ],
   "SerializationFormat": "0.2"

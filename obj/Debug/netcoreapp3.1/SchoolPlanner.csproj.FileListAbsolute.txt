@@ -35,3 +35,4 @@
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.pdb
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.genruntimeconfig.cache
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.csproj.CopyComplete
+/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/EditDictionary.cshtml.g.cs

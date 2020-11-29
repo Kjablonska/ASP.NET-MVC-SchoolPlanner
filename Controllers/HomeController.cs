@@ -20,10 +20,17 @@ namespace SchoolPlanner.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            SchoolPlannerModel schoolPlanner = new SchoolPlannerModel();
+
+            return View(schoolPlanner);
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult EditDictionary()
         {
             return View();
         }
@@ -33,5 +40,6 @@ namespace SchoolPlanner.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }
