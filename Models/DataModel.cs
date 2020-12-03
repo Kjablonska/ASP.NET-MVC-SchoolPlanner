@@ -21,6 +21,14 @@ namespace Data.Models
         public List<string> rooms { get; set; }
         public List<string> teachers { get; set; }
 
+        public ActivityData getActivity(string room, int slot, string day) {
+            foreach (var activity in activities) {
+                if (activity.room == room && activity.slot == slot && activity.day == day)
+                    return activity;
+            }
+
+            return new ActivityData();
+        }
 
     }
 

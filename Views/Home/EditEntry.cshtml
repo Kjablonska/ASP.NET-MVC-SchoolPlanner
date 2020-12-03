@@ -1,0 +1,66 @@
+@model SchoolPlannerModel
+
+@functions{
+
+    public string selectedGroup {get; set;}
+    public void getActivityDetails() {
+        ActivityData activity = @Model.getActivityByRoomSlotDay(Context.Request.Query["room"].ToString(), int.Parse(Context.Request.Query["slot"].ToString()), Context.Request.Query["day"].ToString());
+    }
+
+    public object getEventParameters() {
+        var room = Context.Request.Query["room"].ToString();
+        var day = Context.Request.Query["day"].ToString();
+        var slot = int.Parse(Context.Request.Query["slot"].ToString());
+
+        return new {
+            room,
+            slot,
+            day,
+            selectedGroup
+        };
+    }
+}
+
+
+
+<form method="post" action="@Url.Action("SaveEntry", "Home")">
+<div class="container">
+    <table class="table">
+        <tr>
+            <th>Room</th>
+            <select disabled>
+                <option>@(Context.Request.Query["room"].ToString())</option>
+            </select>
+        </tr>
+        <tr>
+            <th>Group</th>
+            <th>
+                @* @using(Html.BeginForm("SaveEntry", "Home", FormMethod.Get, new { enctype = "multipart/form-data" })) { *@
+                @{
+                    @Html.DropDownList("group", (SelectList)@Model.getGroups(), new { style = "width:120px", onchange="selectedGroup=this.value"})
+                }
+            </th>
+        </tr>
+        <tr>
+            <th>Teacher</th>
+            <th>
+                @{
+                    @Html.DropDownList("teacher", (SelectList)@Model.getTeachers(), new { style = "width:120px"})
+                }
+            </th>
+        </tr>
+        <tr>
+            <th>Class</th>
+            <th>
+                @{
+                    @Html.DropDownList("class", (SelectList)@Model.getClasses(), new { style = "width:120px"})
+                }
+            </th>
+        </tr>
+    </table>
+</div>
+
+<input type="submit">
+</form>
+
+

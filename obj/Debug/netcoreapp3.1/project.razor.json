@@ -14392,6 +14392,11 @@
   "RootNamespace": "SchoolPlanner",
   "Documents": [
     {
+      "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/Home/EditEntry.cshtml",
+      "TargetPath": "Views\\Home\\EditEntry.cshtml",
+      "FileKind": "mvc"
+    },
+    {
       "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/_ViewStart.cshtml",
       "TargetPath": "Views\\_ViewStart.cshtml",
       "FileKind": "mvc"

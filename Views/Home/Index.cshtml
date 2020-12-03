@@ -1,9 +1,7 @@
 ﻿@model SchoolPlannerModel
+
 @{
-    string currentRoom = "0";
-
-    ViewData["Table"] = "School Planner";
-
+    string currentGroup = "";
     string[] ColumnsHeaders = new string[] {
         ""
         ,"Monday"
@@ -26,25 +24,21 @@
     };
 }
 
-<body>
+@functions{
+    void switchRooms(string val) {
+        <a class="hyperlink" href=@Url.Action("UpdateRoom", "Home", new {room = val})></a>
+    }
+}
 
-<div class = "roomSelection">
-    Room&nbsp;&nbsp;
-    <select onchange="currentRoom = this.value;">
-        @{
-            if (@Model.getRoomList() != null && !@Model.getRoomList().Any()) {
-                foreach (var room in @Model.getRoomList() ?? new List<string>()) {
-                    <option>@room</option>
-                }
-                currentRoom = @Model.getRoomList().First();
-            }
 
-        }
-    </select>
+<div class="form-group">
+Room
+    @{
+        @Html.DropDownListFor(m=>m.currentRoom, (SelectList)ViewBag.Rooms, new { style = "width:60px", onchange="window.location.href = '/Home/UpdateRoom?room=' + this.value"})
+    }
 </div>
 
-<div class="table-responsive">
-    &nbsp;
+<div class="table-responsive col-container" id="schoolTable">
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -66,9 +60,14 @@
                         <th>
                             @RowsHeaders[slot]
                             @{
-                                for (var day = 0; day < ColumnsHeaders.Length - 1; day++) {
-                                    <td ondblclick="window.location='Home/EditDictionary'">
-                                        @Model.getActivityByRoomAndSlot(currentRoom, slot, ColumnsHeaders[day]);
+                                for (var day = 1; day < ColumnsHeaders.Length; day++) {
+                                    <td class="entryData">
+                                        @{
+                                            currentGroup = @Model.getActivityByRoomAndSlot(@Model.currentRoom, slot, @ColumnsHeaders[day]);
+                                            <a href=@Url.Action("EditEntry", new {room = @Model.currentRoom, slot = @slot, day = @ColumnsHeaders[day]})>
+                                                <button class="favorite styled" type="button">@currentGroup</button>
+                                            </a>
+                                        }
                                     </td>
                                 }
                             }
@@ -80,6 +79,3 @@
         </tbody>
     </table>
 </div>
-
-
-</body>

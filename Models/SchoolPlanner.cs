@@ -4,19 +4,52 @@ using Data.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.IO;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SchoolPlanner.Models
 {
     public class SchoolPlannerModel
     {
-        Dictionary<string, int> DAY_TO_INT = new Dictionary<string, int> { { "Monday", 0 }, { "Tuesday", 1 }, { "Wednesday", 2 }, { "Thursday", 3 }, { "Friday", 4 } };
-        private string currentRoom;
+        public const string EMPTY_ENTRY = " ";
+        public string currentRoom {get; set;}
         private DataModel schoolData;
+
+
         private string jsonData = "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/data.json";
 
+        public string getActivityByRoomAndSlot(string roomName, int slot, string day) {
+            ActivityData activity = schoolData.getActivity(roomName, slot, day);
 
-        public ActivityData getActivityByRoomAndSlot(string roomName, int slot, string day) {
-            return new ActivityData();
+            if (activity.group != null)
+                return activity.group;
+            else
+                return EMPTY_ENTRY;
+
+        }
+
+        public ActivityData getActivityByRoomSlotDay(string roomName, int slot, string day) {
+            ActivityData activity = schoolData.getActivity(roomName, slot, day);
+
+            if (activity.group != null)
+                return activity;
+            else
+                return new ActivityData();
+        }
+
+        public SelectList getGroups() {
+            IEnumerable<SelectListItem> roomsItems = schoolData.groups.Select(m => new SelectListItem { Text = m, Value = m });
+            return new SelectList(roomsItems, "Value" , "Text");
+        }
+
+        public SelectList getTeachers() {
+            IEnumerable<SelectListItem> roomsItems = schoolData.teachers.Select(m => new SelectListItem { Text = m, Value = m });
+            return new SelectList(roomsItems, "Value" , "Text");
+        }
+
+        public SelectList getClasses() {
+            IEnumerable<SelectListItem> roomsItems = schoolData.classes.Select(m => new SelectListItem { Text = m, Value = m });
+            return new SelectList(roomsItems, "Value" , "Text");
         }
 
         public void deserializeJsonFile() {
@@ -29,5 +62,19 @@ namespace SchoolPlanner.Models
             return schoolData.rooms;
         }
 
+        public List<string> getGroupList()
+        {
+            return schoolData.groups;
+        }
+
+        public List<string> getTeacherList()
+        {
+            return schoolData.teachers;
+        }
+
+        public List<string> getClassList()
+        {
+            return schoolData.classes;
+        }
     }
 }
