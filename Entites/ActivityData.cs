@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-
-namespace Data.Models
-{
-
+namespace SchoolPlanner.Entities {
     public class ActivityData
     {
         public string clas { get; set; }
@@ -14,7 +10,7 @@ namespace Data.Models
 
         public ActivityData() {}
 
-        public ActivityData(string room, int slot, string day, string clas, string group, string teacher) {
+        public ActivityData(string room, int slot, string day, string group, string clas, string teacher) {
             this.room = room;
             this.slot = slot;
             this.day = day;
@@ -23,15 +19,4 @@ namespace Data.Models
             this.teacher = teacher;
         }
     }
-
-    public class DataModel
-    {
-        public List<ActivityData> activities { get; set; }
-        public List<string> classes { get; set; }
-        public List<string> groups { get; set; }
-        public List<string> rooms { get; set; }
-        public List<string> teachers { get; set; }
-
-    }
-
 }

@@ -1,4 +1,4 @@
-﻿@model SchoolPlannerModel
+﻿@model SchoolPlannerViewModel
 
 @{
     string currentGroup = "";
@@ -34,7 +34,7 @@
 <div class="form-group">
 Room
     @{
-        @Html.DropDownListFor(m=>m.currentRoom, (SelectList)ViewBag.Rooms, new { style = "width:60px", onchange="window.location.href = '/Home/UpdateRoom?room=' + this.value"})
+        @Html.DropDownListFor(m=>m.currentRoom, (SelectList)ViewBag.Rooms, new { style = "width:60px", onchange="window.location.href = 'Home/UpdateRoom?room=' + this.value"})
     }
 </div>
 
@@ -63,7 +63,8 @@ Room
                                 for (var day = 1; day < ColumnsHeaders.Length; day++) {
                                     <td class="entryData">
                                         @{
-                                            currentGroup = @Model.getActivityByRoomAndSlot(@Model.currentRoom, slot, @ColumnsHeaders[day]);
+                                            currentGroup = @Model.getGroup(@Model.currentRoom, slot, @ColumnsHeaders[day]);
+
                                             <a href=@Url.Action("EditEntry", new {room = @Model.currentRoom, slot = @slot, day = @ColumnsHeaders[day]})>
                                                 <button class="favorite styled" type="button">@currentGroup</button>
                                             </a>

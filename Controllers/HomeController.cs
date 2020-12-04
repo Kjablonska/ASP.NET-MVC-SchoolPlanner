@@ -6,47 +6,66 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolPlanner.Models;
+using Data.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SchoolPlanner.Entities;
 
 namespace SchoolPlanner.Controllers
 {
     public class HomeController : Controller
     {
-        SchoolPlannerModel schoolPlanner;
+        DataContext schoolData;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            this.schoolPlanner = new SchoolPlannerModel();
-            schoolPlanner.deserializeJsonFile();
+            this.schoolData = new DataContext();
         }
 
         public IActionResult Index()
         {
+            SchoolPlannerViewModel schoolTimeTable = new SchoolPlannerViewModel();
+            schoolTimeTable.roomData = schoolData.schoolData;
 
-            IEnumerable<SelectListItem> roomsItems = schoolPlanner.getRoomList().Select(m => new SelectListItem { Text = m, Value = m });
-            ViewBag.Rooms = new SelectList(roomsItems, "Value" , "Text");
+            ViewBag.Rooms = new SelectList(schoolData.getRooms(), "Value" , "Text");
 
             if (HttpContext.Request.Query.TryGetValue("room", out var roomParameter))
-                schoolPlanner.currentRoom = (string)roomParameter;
+                schoolTimeTable.currentRoom = (string)roomParameter;
             else
-                schoolPlanner.currentRoom = roomsItems.First().Value;
+                schoolTimeTable.currentRoom = schoolData.getRooms().First().Value;
 
-
-            return View(schoolPlanner);
+            return View(schoolTimeTable);
         }
 
-        public IActionResult UpdateRoom(string room) {
-            schoolPlanner.currentRoom = room;
+        public IActionResult UpdateRoom(int? room) {
+            // if (HttpContext.Request.Query.TryGetValue("room", out var roomParameter)) {
+            //     return RedirectToAction("Index", "Home", new { room });
+            // } else {
+            //     return RedirectToAction("Index", "Home", new { room });
+            // }
+
             return RedirectToAction(nameof(Index), new { room });
         }
 
         [HttpPost]
         public IActionResult SaveEntry() {
             var group = Request.Form["group"].ToString();
-            // add the rest.
-            return RedirectToAction(nameof(Index), new {schoolPlanner.currentRoom});
+            var clas = Request.Form["class"].ToString();
+            var teacher = Request.Form["teacher"].ToString();
+            var room = Request.Form["room"].ToString();
+            var slot = int.Parse(Request.Form["slot"]);
+            var day = Request.Form["day"].ToString();
+
+            schoolData.addActivity(room, slot, day, group, clas, teacher);
+ 
+            return RedirectToAction("Index", new {room = room});
+        }
+
+        [HttpPost]
+        public IActionResult UnassignEntry(string? room, int slot, string? day) {
+            schoolData.removeActivity(room, slot, day);
+            return RedirectToAction("Index", new {room = room});
         }
 
         public IActionResult Privacy()
@@ -61,23 +80,19 @@ namespace SchoolPlanner.Controllers
 
         public IActionResult EditEntry()
         {
-            return View(schoolPlanner);
+            EditEntryViewModel editEntryViewModel = new EditEntryViewModel();
+
+            editEntryViewModel.classesItems = schoolData.getClasses();
+            editEntryViewModel.groupsItems = schoolData.getGroups();
+            editEntryViewModel.teachersItems = schoolData.getTeachers();
+
+            return View(editEntryViewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-
-        public ActionResult DefaultRoom() {
-            IEnumerable<SelectListItem> roomsItems = schoolPlanner.getRoomList().Select(m => new SelectListItem { Text = m, Value = m });
-            ViewBag.Rooms = new SelectList(roomsItems, "Value" , "Text");
-
-            schoolPlanner.currentRoom = roomsItems.First().Value;
-
-            return RedirectToAction(nameof(Index), new {schoolPlanner.currentRoom});
         }
 
     }

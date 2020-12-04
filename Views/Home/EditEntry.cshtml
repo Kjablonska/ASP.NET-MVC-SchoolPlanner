@@ -1,12 +1,6 @@
-@model SchoolPlannerModel
+@model EditEntryViewModel
 
 @functions{
-
-    public string selectedGroup {get; set;}
-    public void getActivityDetails() {
-        ActivityData activity = @Model.getActivityByRoomSlotDay(Context.Request.Query["room"].ToString(), int.Parse(Context.Request.Query["slot"].ToString()), Context.Request.Query["day"].ToString());
-    }
-
     public object getEventParameters() {
         var room = Context.Request.Query["room"].ToString();
         var day = Context.Request.Query["day"].ToString();
@@ -16,28 +10,37 @@
             room,
             slot,
             day,
-            selectedGroup
         };
     }
 }
 
 
-
-<form method="post" action="@Url.Action("SaveEntry", "Home")">
+<form method="post" action="@Url.Action("SaveEntry")">
 <div class="container">
     <table class="table">
         <tr>
-            <th>Room</th>
-            <select disabled>
-                <option>@(Context.Request.Query["room"].ToString())</option>
-            </select>
+            <th><label for="room">Room</label></th>
+            <th>
+                <input type="text" id="room" name="room" style = "width:120px" value=@(Context.Request.Query["room"].ToString()) readonly>
+            </th>
+        </tr>
+        <tr>
+            <th><label for="room">Slot</label></th>
+            <th>
+                <input type="text" id="slot" name="slot" style = "width:120px" value=@(Context.Request.Query["slot"].ToString()) readonly>
+            </th>
+        </tr>
+        <tr>
+            <th><label for="room">Day</label></th>
+            <th>
+                <input type="text" id="day" name="day" style = "width:120px" value=@(Context.Request.Query["day"].ToString()) readonly>
+            </th>
         </tr>
         <tr>
             <th>Group</th>
             <th>
-                @* @using(Html.BeginForm("SaveEntry", "Home", FormMethod.Get, new { enctype = "multipart/form-data" })) { *@
                 @{
-                    @Html.DropDownList("group", (SelectList)@Model.getGroups(), new { style = "width:120px", onchange="selectedGroup=this.value"})
+                    @Html.DropDownList("group", (SelectList)@Model.groupsItems, new { style = "width:120px", onchange="selectedGroup=this.value"})
                 }
             </th>
         </tr>
@@ -45,7 +48,7 @@
             <th>Teacher</th>
             <th>
                 @{
-                    @Html.DropDownList("teacher", (SelectList)@Model.getTeachers(), new { style = "width:120px"})
+                    @Html.DropDownList("teacher", (SelectList)@Model.teachersItems, new { style = "width:120px"})
                 }
             </th>
         </tr>
@@ -53,7 +56,7 @@
             <th>Class</th>
             <th>
                 @{
-                    @Html.DropDownList("class", (SelectList)@Model.getClasses(), new { style = "width:120px"})
+                    @Html.DropDownList("class", (SelectList)@Model.classesItems, new { style = "width:120px"})
                 }
             </th>
         </tr>
@@ -63,4 +66,10 @@
 <input type="submit">
 </form>
 
+<form action=@Url.Action("UnassignEntry", getEventParameters()) method="post">
+    <button name=Unassign>Unassign</button>
+</form>
 
+<a href=@Url.Action("Index", new {room = @Context.Request.Query["room"].ToString()})>
+    <button method="post" class="button">Cancel</button>
+</a>

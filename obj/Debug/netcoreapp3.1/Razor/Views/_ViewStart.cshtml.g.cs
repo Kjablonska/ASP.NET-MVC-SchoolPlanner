@@ -26,22 +26,8 @@ using SchoolPlanner.Models;
 #line default
 #line hidden
 #nullable disable
-#nullable restore
-#line 3 "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/_ViewImports.cshtml"
-using Data;
-
-#line default
-#line hidden
-#nullable disable
-#nullable restore
-#line 4 "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/_ViewImports.cshtml"
-using Data.Models;
-
-#line default
-#line hidden
-#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7091c65830b0329e613be026ede8a57552863778", @"/Views/_ViewStart.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"79c4f1520e26c4a35d22707f4bbd667146d0226f", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"7b6fb50251b9279afcfafd132029793408e05ecb", @"/Views/_ViewImports.cshtml")]
     public class Views__ViewStart : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998
