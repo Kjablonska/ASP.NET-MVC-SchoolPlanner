@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,18 +8,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SchoolPlanner.Entities {
     public class DataContext {
         private readonly string jsonFile = "data.json";
-
         public const string EMPTY_ENTRY = " ";
         public SchoolData schoolData;
 
         public DataContext() {
             DeserializeData();
+            CheckDataCorrectness();
         }
 
         public void DeserializeData() {
             if (File.Exists(jsonFile)) {
                 var jsonData = File.ReadAllText(jsonFile);
-                schoolData = JsonSerializer.Deserialize<SchoolData>(jsonData);
+                try {
+                    schoolData = JsonSerializer.Deserialize<SchoolData>(jsonData);
+                } catch (Exception ex) {
+                    schoolData = new SchoolData();
+                    Console.WriteLine(ex);
+                    throw new JsonException("File data incorrect");
+                }
+            } else {
+                File.Create(jsonFile);
+                schoolData = new SchoolData();
+                SerializeData();
+            }
+        }
+
+        private void CheckDataCorrectness() {
+            if (schoolData.classes == null || schoolData.rooms == null || schoolData.teachers == null || schoolData.groups == null || schoolData.activities == null) {
+                throw new InvalidDataException("Null data values.");
             }
         }
 
@@ -35,7 +50,7 @@ namespace SchoolPlanner.Entities {
                     return activity;
             }
 
-            return new ActivityData();
+            return null;
         }
 
         public string getGroupByRoomAndSlot(string roomName, int slot, string day) {
@@ -65,6 +80,46 @@ namespace SchoolPlanner.Entities {
             SerializeData();
 
             return true;
+        }
+
+        public void SaveDictionary(string dictionaryName, List<string> dictionaryItems) {
+            switch(dictionaryName) {
+                case "teachers":
+                    schoolData.teachers = dictionaryItems;
+                break;
+                case "rooms":
+                    schoolData.rooms = dictionaryItems;
+                break;
+                case "classes":
+                    schoolData.classes = dictionaryItems;
+                break;
+                case "groups":
+                    schoolData.groups = dictionaryItems;
+                break;
+                default:
+                break;
+            }
+            SerializeData();
+        }
+
+        public void RemoveDictionaryItem(string dictionaryName, string item) {
+            switch(dictionaryName) {
+                case "teachers":
+                    schoolData.teachers.Remove(item);
+                break;
+                case "rooms":
+                    schoolData.rooms.Remove(item);
+                break;
+                case "classes":
+                    schoolData.classes.Remove(item);
+                break;
+                case "groups":
+                    schoolData.groups.Remove(item);
+                break;
+                default:
+                break;
+            }
+            SerializeData();
         }
 
         public SelectList getGroups() {

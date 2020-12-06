@@ -8,5 +8,9 @@ namespace SchoolPlanner.Models
         public IEnumerable<SelectListItem> classesItems {get; set;}
         public IEnumerable<SelectListItem> teachersItems {get; set;}
 
+        public string group {get; set;}
+        public string clas {get; set;}
+        public string teacher {get; set;}
+
     }
 }
