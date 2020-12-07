@@ -53,7 +53,7 @@ namespace SchoolPlanner.Controllers
 
         [HttpPost]
         public IActionResult SaveEntry(string group, string clas, string teacher, string room, int? slot, string day) {
-            if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
+            if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue || String.IsNullOrEmpty(group) || String.IsNullOrEmpty(clas) || String.IsNullOrEmpty(teacher))
                 return RedirectToAction(nameof(Index));
 
             plannerData.addActivity(room, slot.Value, day, group, clas, teacher);

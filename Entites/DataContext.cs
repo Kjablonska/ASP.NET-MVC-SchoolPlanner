@@ -74,16 +74,15 @@ namespace SchoolPlanner.Entities {
         }
 
         public void addActivity(string room, int slot, string day, string group, string clas, string teacher) {
-            if (ValidateNewActivity(room, slot, day, group, clas, teacher)) {
-                schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
-                SerializeData();
-            }
+            ValidateNewActivity(room, slot, day, group, clas, teacher);
+            schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
+            SerializeData();
         }
 
         private bool ValidateNewActivity(string room, int slot, string day, string group, string clas, string teacher) {
-            foreach(var activity in schoolData.activities) {
+            foreach(var activity in schoolData.activities.ToList()) {
                 if (activity.room != room && activity.day == day && activity.slot == slot && (activity.group == group || activity.teacher == teacher))
-                    return false;
+                    schoolData.activities.Remove(activity);
             }
             return true;
         }
