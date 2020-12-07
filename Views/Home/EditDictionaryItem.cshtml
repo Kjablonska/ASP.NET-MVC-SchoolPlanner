@@ -1,0 +1,26 @@
+@model EditDictionaryItemViewModel
+
+@functions{
+    public object getEventParameters() {
+        var editedItem = Context.Request.Query["item"].ToString();
+        var dictionary = Context.Request.Query["dictionary"].ToString();
+
+        return new {
+            dictionary,
+            editedItem,
+        };
+    }
+}
+
+
+@using (Html.BeginForm("SaveDictionaryItem", "Home", getEventParameters())) {
+    <label for="item" value="Save"></label>
+    <input type="text" id="item" name="item" style="width:400px" value=@Context.Request.Query["item"].ToString()>
+    <div>
+        <input class="button button1" type="submit" Save>
+        <a href=@Url.Action("EditDictionary", new {dictionary=Context.Request.Query["dictionary"].ToString()})>
+        <button method="post" class="button button3">Cancel</button>
+        </a>
+    </div>
+}
+

@@ -36,6 +36,6 @@
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.genruntimeconfig.cache
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.csproj.CopyComplete
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/EditDictionary.cshtml.g.cs
-/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/bin/Debug/netcoreapp3.1/data.json
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/EditEntry.cshtml.g.cs
-/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/ErrorTmp.cshtml.g.cs
+/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/bin/Debug/netcoreapp3.1/data.json
+/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/EditDictionaryItem.cshtml.g.cs

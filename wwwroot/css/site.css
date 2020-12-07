@@ -70,7 +70,7 @@ body {
   line-height: 60px; /* Vertically center the text there */
 }
 
-.styled {
+.table-entry {
   display: inline-block;
   border: 0;
   width: 100%;
@@ -114,7 +114,27 @@ td {
   width: 100%;
 }
 
-input {
+.input-data {
   border-width:0px;
-  border:none;
+}
+
+.button1 {
+  background-color: rgb(212, 248, 191);
+  color: black;
+  border: 2px solid #4CAF50; /* Green */
+  width: 80px;
+}
+
+.button3 {
+  background-color: rgb(247, 192, 192); 
+  color: black; 
+  border: 2px solid #f44336;
+  width: 80px;
+}
+
+.button5 {
+  background-color: rgb(226, 223, 223);
+  color: black;
+  border: 2px solid #555555;
+  width: 80px;
 }

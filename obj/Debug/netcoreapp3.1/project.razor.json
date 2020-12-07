@@ -14432,8 +14432,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/Home/ErrorTmp.cshtml",
-      "TargetPath": "Views\\Home\\ErrorTmp.cshtml",
+      "FilePath": "/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/Views/Home/EditDictionaryItem.cshtml",
+      "TargetPath": "Views\\Home\\EditDictionaryItem.cshtml",
       "FileKind": "mvc"
     },
     {

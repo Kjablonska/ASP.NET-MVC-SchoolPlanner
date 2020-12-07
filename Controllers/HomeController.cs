@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SchoolPlanner.Models;
@@ -13,42 +12,39 @@ namespace SchoolPlanner.Controllers
 {
     public class HomeController : Controller
     {
-        DataContext plannerData;
+        private readonly DataContext plannerData;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
+
+            this.plannerData = new DataContext();
             _logger = logger;
         }
 
-        public IActionResult Index(int? room)
+        public IActionResult Index(string room)
         {
-            try {
-                this.plannerData = new DataContext();
-            } catch (Exception ex) {
-                return RedirectToAction(nameof(Error), new {message = ex.Message});
-            }
 
             SchoolPlannerViewModel schoolTimeTable = new SchoolPlannerViewModel();
             schoolTimeTable.roomData = plannerData.schoolData;
 
             ViewBag.Rooms = new SelectList(plannerData.getRooms(), "Value" , "Text");
 
-            if (HttpContext.Request.Query.TryGetValue("room", out var roomParameter))
-                schoolTimeTable.currentRoom = (string)roomParameter;
+            if (room != null)
+                schoolTimeTable.currentRoom = room;
             else
-                schoolTimeTable.currentRoom = plannerData.getRooms().First().Value;
+                schoolTimeTable.currentRoom = plannerData.getRooms().Any() ?  plannerData.getRooms().First().Value : string.Empty;
 
             return View(schoolTimeTable);
         }
 
-        public IActionResult UpdateRoom(int? room) {
+        public IActionResult UpdateRoom(string room) {
             return RedirectToAction(nameof(Index), new { room });
         }
 
         [HttpPost]
         public IActionResult SaveDictionary(List<string> items, string dictionary) {
-            if (items != null && items.Count != 0 && dictionary != null && dictionary != string.Empty) {
+            if (items != null && items.Count != 0 && String.IsNullOrEmpty(dictionary)) {
                 plannerData.SaveDictionary(dictionary, items);
                 return RedirectToAction(nameof(EditDictionary), new {dictionary=dictionary});
             }
@@ -56,19 +52,19 @@ namespace SchoolPlanner.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveEntry(string group, string clas, string teacher, string room, int slot, string day) {
+        public IActionResult SaveEntry(string group, string clas, string teacher, string room, int? slot, string day) {
+            if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
+                return RedirectToAction(nameof(Index));
 
-            if (group != null || clas != null ) {
-                // DO NOT SAVE
-                plannerData.addActivity(room, slot, day, group, clas, teacher);
-            }
-
+            plannerData.addActivity(room, slot.Value, day, group, clas, teacher);
             return RedirectToAction("Index", new {room = room});
         }
 
-        [HttpPost]
-        public IActionResult UnassignEntry(string room, int slot, string day) {
-            plannerData.removeActivity(room, slot, day);
+        public IActionResult UnassignEntry(string room, int? slot, string day) {
+            if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
+                return RedirectToAction(nameof(Index));
+
+            plannerData.removeActivity(room, slot.Value, day);
             return RedirectToAction("Index", new {room = room});
         }
 
@@ -102,24 +98,41 @@ namespace SchoolPlanner.Controllers
             return View(editDictionary);
         }
 
-        public IActionResult AddDictionaryItem() {
-            return RedirectToAction("EditDictionary");
+        public IActionResult EditDictionaryItem(string dictionary, string item) {
+            EditDictionaryItemViewModel editItem = new EditDictionaryItemViewModel();
+
+            editItem.dictionaryName = dictionary;
+            editItem.item = item;
+
+            return View(editItem);
+        }
+
+        public IActionResult SaveDictionaryItem(string editedItem, string item, string dictionary) {
+            if (String.IsNullOrEmpty(editedItem))
+                plannerData.AddDictionaryItem(dictionary, item);
+            else
+                plannerData.EditDictionaryItem(dictionary, editedItem, item);
+
+            return RedirectToAction(nameof(EditDictionary), new {dictionary = dictionary});
         }
 
         public IActionResult RemoveDictionaryItem(string item, string dictionary) {
             plannerData.RemoveDictionaryItem(dictionary, item);
-            return RedirectToAction("EditDictionary", new {dictionary = dictionary});
+            return RedirectToAction(nameof(EditDictionary), new {dictionary = dictionary});
         }
 
-        public IActionResult EditEntry(string room, int slot, string day)
+        public IActionResult EditEntry(string room, int? slot, string day)
         {
+            if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
+                return RedirectToAction(nameof(Index));
+
             EditEntryViewModel editEntry = new EditEntryViewModel();
 
             editEntry.classesItems = plannerData.getClasses();
             editEntry.groupsItems = plannerData.getGroups();
             editEntry.teachersItems = plannerData.getTeachers();
 
-            ActivityData selectedActivity = plannerData.getActivity(room, slot, day);
+            ActivityData selectedActivity = plannerData.getActivity(room, slot.Value, day);
 
             if (selectedActivity != null) {
                 editEntry.clas = selectedActivity.clas;
@@ -135,9 +148,10 @@ namespace SchoolPlanner.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(string message)
+        public IActionResult Error(Exception ex)
         {
-            return View(new ErrorViewModel { message = message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            _logger.LogError(ex.Message);
+            return View(new ErrorViewModel { message = ex.Message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
     }

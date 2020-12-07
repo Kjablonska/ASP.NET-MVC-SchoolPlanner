@@ -21,21 +21,19 @@ namespace SchoolPlanner.Entities {
                 var jsonData = File.ReadAllText(jsonFile);
                 try {
                     schoolData = JsonSerializer.Deserialize<SchoolData>(jsonData);
-                } catch (Exception ex) {
+                } catch (JsonException) {
                     schoolData = new SchoolData();
-                    Console.WriteLine(ex);
-                    throw new JsonException("File data incorrect");
                 }
             } else {
                 File.Create(jsonFile);
-                schoolData = new SchoolData();
+                schoolData = new SchoolData();;
                 SerializeData();
             }
         }
 
         private void CheckDataCorrectness() {
             if (schoolData.classes == null || schoolData.rooms == null || schoolData.teachers == null || schoolData.groups == null || schoolData.activities == null) {
-                throw new InvalidDataException("Null data values.");
+                schoolData = new SchoolData();
             }
         }
 
@@ -75,10 +73,18 @@ namespace SchoolPlanner.Entities {
             return false;
         }
 
-        public bool addActivity(string room, int slot, string day, string group, string clas, string teacher) {
-            schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
-            SerializeData();
+        public void addActivity(string room, int slot, string day, string group, string clas, string teacher) {
+            if (ValidateNewActivity(room, slot, day, group, clas, teacher)) {
+                schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
+                SerializeData();
+            }
+        }
 
+        private bool ValidateNewActivity(string room, int slot, string day, string group, string clas, string teacher) {
+            foreach(var activity in schoolData.activities) {
+                if (activity.room != room && activity.day == day && activity.slot == slot && (activity.group == group || activity.teacher == teacher))
+                    return false;
+            }
             return true;
         }
 
@@ -102,19 +108,93 @@ namespace SchoolPlanner.Entities {
             SerializeData();
         }
 
+        public void EditDictionaryItem(string dictionaryName, string oldItem, string newItem) {
+            switch(dictionaryName) {
+                case "teachers":
+                    EditTeacher(oldItem, newItem);
+                break;
+                case "rooms":
+                    EditRoom(oldItem, newItem);
+                break;
+                case "classes":
+                    EditClass(oldItem, newItem);
+                break;
+                case "groups":
+                    EditGroup(oldItem, newItem);
+                break;
+                default:
+                break;
+            }
+            SerializeData();
+        }
+
+        public void AddDictionaryItem(string dictionaryName, string newItem) {
+            switch(dictionaryName) {
+                case "teachers":
+                    AddTeacher(newItem);
+                break;
+                case "rooms":
+                    AddRoom(newItem);
+                break;
+                case "classes":
+                    AddClass(newItem);
+                break;
+                case "groups":
+                    AddGroup(newItem);
+                break;
+                default:
+                break;
+            }
+            SerializeData();
+        }
+
+
+        private void AddTeacher(string newTeacher) {
+            if (schoolData.teachers.Contains(newTeacher))
+                return;
+            else
+                schoolData.teachers.Add(newTeacher);
+        }
+
+        private void AddClass(string newClass) {
+            if (schoolData.classes.Contains(newClass))
+                return;
+            else
+                schoolData.classes.Add(newClass);
+        }
+
+        private void AddRoom(string newRoom) {
+            if (schoolData.rooms.Contains(newRoom))
+                return;
+            else
+                schoolData.rooms.Add(newRoom);
+        }
+
+        private void AddGroup(string newGroup) {
+            if (schoolData.groups.Contains(newGroup))
+                return;
+            else
+                schoolData.groups.Add(newGroup);
+        }
+
+
         public void RemoveDictionaryItem(string dictionaryName, string item) {
             switch(dictionaryName) {
                 case "teachers":
                     schoolData.teachers.Remove(item);
+                    RemoveTeacherActivities(item);
                 break;
                 case "rooms":
                     schoolData.rooms.Remove(item);
+                    RemoveRoomActivities(item);
                 break;
                 case "classes":
                     schoolData.classes.Remove(item);
+                    RemoveClassActivities(item);
                 break;
                 case "groups":
                     schoolData.groups.Remove(item);
+                    RemoveGroupActivities(item);
                 break;
                 default:
                 break;
@@ -140,6 +220,82 @@ namespace SchoolPlanner.Entities {
         public SelectList getRooms() {
             IEnumerable<SelectListItem> roomsItems = schoolData.rooms.Select(m => new SelectListItem { Text = m, Value = m });
             return new SelectList(roomsItems, "Value" , "Text");
+        }
+
+        private void EditTeacher(string oldTeacherName, string newTeacherName) {
+            if (!schoolData.teachers.Contains(oldTeacherName) || schoolData.teachers.Contains(newTeacherName))
+                return;
+
+            schoolData.teachers[schoolData.teachers.FindIndex(i => i.Equals(oldTeacherName))] =  newTeacherName;
+
+            foreach (var activity in schoolData.activities) {
+                if (activity.teacher == oldTeacherName)
+                    activity.teacher = newTeacherName;
+            }
+        }
+
+        private void EditRoom(string oldRoomName, string newRoomName) {
+            if (!schoolData.rooms.Contains(oldRoomName) || schoolData.rooms.Contains(newRoomName))
+                return;
+
+            schoolData.rooms[schoolData.rooms.FindIndex(i => i.Equals(oldRoomName))] =  newRoomName;
+
+            foreach (var activity in schoolData.activities) {
+                if (activity.room == oldRoomName)
+                    activity.room = newRoomName;
+            }
+        }
+
+        private void EditClass(string oldClassName, string newClassName) {
+            if (!schoolData.classes.Contains(oldClassName) || schoolData.classes.Contains(newClassName))
+                return;
+
+            schoolData.classes[schoolData.classes.FindIndex(i => i.Equals(oldClassName))] =  newClassName;
+
+            foreach (var activity in schoolData.activities) {
+                if (activity.teacher == oldClassName)
+                    activity.teacher = newClassName;
+            }
+        }
+
+        private void EditGroup(string oldGroupName, string newGroupName) {
+            if (!schoolData.groups.Contains(oldGroupName) || schoolData.groups.Contains(newGroupName))
+                return;
+
+            schoolData.groups[schoolData.groups.FindIndex(i => i.Equals(oldGroupName))] =  newGroupName;
+
+            foreach (var activity in schoolData.activities.ToList()) {
+                if (activity.group == oldGroupName)
+                    activity.group = newGroupName;
+            }
+        }
+
+        private void RemoveTeacherActivities(string teacher) {
+            foreach (var activity in schoolData.activities.ToList()) {
+                if (activity.teacher == teacher)
+                    schoolData.activities.Remove(activity);
+            }
+        }
+
+        private void RemoveRoomActivities(string room) {
+            foreach (var activity in schoolData.activities.ToList()) {
+                if (activity.room == room)
+                    schoolData.activities.Remove(activity);
+            }
+        }
+
+        private void RemoveClassActivities(string clas) {
+            foreach (var activity in schoolData.activities.ToList()) {
+                if (activity.clas == clas)
+                    schoolData.activities.Remove(activity);
+            }
+        }
+
+        private void RemoveGroupActivities(string group) {
+            foreach (var activity in schoolData.activities.ToList()) {
+                if (activity.group == group)
+                    schoolData.activities.Remove(activity);
+            }
         }
 
     }
