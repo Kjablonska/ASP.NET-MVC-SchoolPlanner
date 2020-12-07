@@ -119,14 +119,21 @@ td {
 }
 
 .button1 {
-  background-color: rgb(212, 248, 191);
+  background-color: rgb(229, 247, 218);
   color: black;
   border: 2px solid #4CAF50; /* Green */
   width: 80px;
 }
 
+.button2 {
+  background-color: rgb(230, 241, 248); 
+  color: black; 
+  border: 2px solid #008CBA;
+  width: 80px;
+}
+
 .button3 {
-  background-color: rgb(247, 192, 192); 
+  background-color: rgb(255, 228, 228); 
   color: black; 
   border: 2px solid #f44336;
   width: 80px;

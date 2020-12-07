@@ -34,7 +34,7 @@
                         </th>
                         <th>
                             <div>
-                                <button type="submit" form="edit" class="button button1" style="width:100px">Edit</button>
+                                <button type="submit" form="edit" class="button button2" style="width:100px">Edit</button>
                             </div>
                         </th>
                     </tr>
@@ -47,9 +47,9 @@
 }
 
 <div>
-    <input class="button button5" type="submit" value="Save" form="data">
+    <input class="button button1" type="submit" value="Save" form="data">
     <a href=@Url.Action("EditDictionaryItem", new {dictionary=@Model.dictionaryName})>
-        <button class="button button1" method="post" class="button">Add</button>
+        <button class="button button2" method="post" class="button">Add</button>
     </a>
 
     <a href=@Url.Action("Index")>
