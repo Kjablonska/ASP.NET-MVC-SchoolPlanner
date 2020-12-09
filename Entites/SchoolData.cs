@@ -1,17 +1,17 @@
 using System.Collections.Generic;
-using System.ComponentModel;
 
-namespace SchoolPlanner.Entities {
+namespace SchoolPlanner.Entities
+{
     public class SchoolData
     {
         public List<ActivityData> activities { get; set; }
         public List<string> classes { get; set; }
-
         public List<string> groups { get; set; }
         public List<string> rooms { get; set; }
         public List<string> teachers { get; set; }
 
-        public SchoolData() {
+        public SchoolData()
+        {
             activities = new List<ActivityData>();
             classes = new List<string>();
             groups = new List<string>();

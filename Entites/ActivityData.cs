@@ -1,4 +1,5 @@
-namespace SchoolPlanner.Entities {
+namespace SchoolPlanner.Entities
+{
     public class ActivityData
     {
         public string clas { get; set; }
@@ -8,9 +9,10 @@ namespace SchoolPlanner.Entities {
         public int slot { get; set; }
         public string teacher { get; set; }
 
-        public ActivityData() {}
+        public ActivityData() { }
 
-        public ActivityData(string room, int slot, string day, string group, string clas, string teacher) {
+        public ActivityData(string room, int slot, string day, string group, string clas, string teacher)
+        {
             this.room = room;
             this.slot = slot;
             this.day = day;

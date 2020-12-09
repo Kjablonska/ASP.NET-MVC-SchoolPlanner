@@ -1,11 +1,13 @@
 @model EditDictionaryItemViewModel
 
 @functions{
-    public object getEventParameters() {
+    public object getEventParameters()
+    {
         var editedItem = Context.Request.Query["item"].ToString();
         var dictionary = Context.Request.Query["dictionary"].ToString();
 
-        return new {
+        return new
+        {
             dictionary,
             editedItem,
         };
@@ -13,7 +15,8 @@
 }
 
 
-@using (Html.BeginForm("SaveDictionaryItem", "Home", getEventParameters())) {
+@using (Html.BeginForm("SaveDictionaryItem", "Home", getEventParameters()))
+{
     <label for="item" value="Save"></label>
     <input type="text" id="item" name="item" style="width:100%" value=@Context.Request.Query["item"].ToString()>
     <div>
@@ -23,4 +26,3 @@
         <input class="button button1" style="float:right" type="submit" value="Save">
     </div>
 }
-

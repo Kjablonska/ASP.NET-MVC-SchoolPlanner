@@ -83,10 +83,6 @@ body {
   text-shadow: 1px 1px 1px #fff;
   border-radius: 2px;
   background-color: rgb(255, 255, 255);
-  /* background-image: linear-gradient(to top left,
-                                    rgba(247, 238, 238, 0.2),
-                                    rgba(205, 231, 247, 0.2) 30%,
-                                    rgba(247, 238, 238, 0)); */
 }
 
 .styled:hover {

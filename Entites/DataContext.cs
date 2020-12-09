@@ -5,50 +5,65 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace SchoolPlanner.Entities {
-    public class DataContext {
+namespace SchoolPlanner.Entities
+{
+    public class DataContext
+    {
         private readonly string jsonFile = "data.json";
-        public const string EMPTY_ENTRY = " ";
         public SchoolData schoolData;
 
-        public DataContext() {
+        public DataContext()
+        {
             DeserializeData();
         }
 
-        public void DeserializeData() {
-            if (File.Exists(jsonFile)) {
+        public void DeserializeData()
+        {
+            if (File.Exists(jsonFile))
+            {
                 var jsonData = File.ReadAllText(jsonFile);
-                if (String.IsNullOrEmpty(jsonData)) {
+                if (String.IsNullOrEmpty(jsonData))
+                {
                     schoolData = new SchoolData();
                     return;
                 }
 
-                try {
+                try
+                {
                     schoolData = JsonSerializer.Deserialize<SchoolData>(jsonData);
                     CheckDataCorrectness();
-                } catch (JsonException) {
+                }
+                catch (JsonException)
+                {
                     schoolData = new SchoolData();
                 }
-            } else {
+            }
+            else
+            {
                 File.Create(jsonFile);
-                schoolData = new SchoolData();;
+                schoolData = new SchoolData(); ;
                 SerializeData();
             }
         }
 
-        private void CheckDataCorrectness() {
-            if (schoolData.classes == null || schoolData.rooms == null || schoolData.teachers == null || schoolData.groups == null || schoolData.activities == null) {
+        private void CheckDataCorrectness()
+        {
+            if (schoolData.classes == null || schoolData.rooms == null || schoolData.teachers == null || schoolData.groups == null || schoolData.activities == null)
+            {
                 schoolData = new SchoolData();
             }
         }
 
-        public void SerializeData() {
+        public void SerializeData()
+        {
             var jsonData = JsonSerializer.Serialize<SchoolData>(schoolData);
             File.WriteAllText(jsonFile, jsonData);
         }
 
-         public ActivityData getActivity(string room, int slot, string day) {
-            foreach (var activity in schoolData.activities) {
+        public ActivityData getActivity(string room, int slot, string day)
+        {
+            foreach (var activity in schoolData.activities)
+            {
                 if (activity.room == room && activity.slot == slot && activity.day == day)
                     return activity;
             }
@@ -56,19 +71,12 @@ namespace SchoolPlanner.Entities {
             return null;
         }
 
-        public string GetGroupByRoomAndSlot(string roomName, int slot, string day) {
-            ActivityData activity = getActivity(roomName, slot, day);
-
-            if (activity.group != null)
-                return activity.group;
-            else
-                return EMPTY_ENTRY;
-
-        }
-
-        public bool RemoveActivity(string room, int slot, string day) {
-            foreach (var activity in schoolData.activities) {
-                if (activity.room == room && activity.slot == slot && activity.day == day) {
+        public bool RemoveActivity(string room, int slot, string day)
+        {
+            foreach (var activity in schoolData.activities)
+            {
+                if (activity.room == room && activity.slot == slot && activity.day == day)
+                {
                     schoolData.activities.Remove(activity);
                     SerializeData();
                     return true;
@@ -78,103 +86,116 @@ namespace SchoolPlanner.Entities {
             return false;
         }
 
-        public void AddActivity(string room, int slot, string day, string group, string clas, string teacher) {
+        public void AddActivity(string room, int slot, string day, string group, string clas, string teacher)
+        {
             ValidateNewActivity(room, slot, day, group, clas, teacher);
             schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
             SerializeData();
         }
 
-        private bool ValidateNewActivity(string room, int slot, string day, string group, string clas, string teacher) {
-            foreach(var activity in schoolData.activities.ToList()) {
+        private bool ValidateNewActivity(string room, int slot, string day, string group, string clas, string teacher)
+        {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.room != room && activity.day == day && activity.slot == slot && (activity.group == group || activity.teacher == teacher))
                     schoolData.activities.Remove(activity);
             }
             return true;
         }
 
-        public void SaveDictionary(string dictionaryName, List<string> dictionaryItems) {
-            switch(dictionaryName) {
+        public void SaveDictionary(string dictionaryName, List<string> dictionaryItems)
+        {
+            switch (dictionaryName)
+            {
                 case "teachers":
                     schoolData.teachers = dictionaryItems;
-                break;
+                    break;
                 case "rooms":
                     schoolData.rooms = dictionaryItems;
-                break;
+                    break;
                 case "classes":
                     schoolData.classes = dictionaryItems;
-                break;
+                    break;
                 case "groups":
                     schoolData.groups = dictionaryItems;
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
             SerializeData();
         }
 
-        public void EditDictionaryItem(string dictionaryName, string oldItem, string newItem) {
-            switch(dictionaryName) {
+        public void EditDictionaryItem(string dictionaryName, string oldItem, string newItem)
+        {
+            switch (dictionaryName)
+            {
                 case "teachers":
                     EditTeacher(oldItem, newItem);
-                break;
+                    break;
                 case "rooms":
                     EditRoom(oldItem, newItem);
-                break;
+                    break;
                 case "classes":
                     EditClass(oldItem, newItem);
-                break;
+                    break;
                 case "groups":
                     EditGroup(oldItem, newItem);
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
             SerializeData();
         }
 
-        public void AddDictionaryItem(string dictionaryName, string newItem) {
-            switch(dictionaryName) {
+        public void AddDictionaryItem(string dictionaryName, string newItem)
+        {
+            switch (dictionaryName)
+            {
                 case "teachers":
                     AddTeacher(newItem);
-                break;
+                    break;
                 case "rooms":
                     AddRoom(newItem);
-                break;
+                    break;
                 case "classes":
                     AddClass(newItem);
-                break;
+                    break;
                 case "groups":
                     AddGroup(newItem);
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
             SerializeData();
         }
 
 
-        private void AddTeacher(string newTeacher) {
+        private void AddTeacher(string newTeacher)
+        {
             if (schoolData.teachers.Contains(newTeacher))
                 return;
             else
                 schoolData.teachers.Add(newTeacher);
         }
 
-        private void AddClass(string newClass) {
+        private void AddClass(string newClass)
+        {
             if (schoolData.classes.Contains(newClass))
                 return;
             else
                 schoolData.classes.Add(newClass);
         }
 
-        private void AddRoom(string newRoom) {
+        private void AddRoom(string newRoom)
+        {
             if (schoolData.rooms.Contains(newRoom))
                 return;
             else
                 schoolData.rooms.Add(newRoom);
         }
 
-        private void AddGroup(string newGroup) {
+        private void AddGroup(string newGroup)
+        {
             if (schoolData.groups.Contains(newGroup))
                 return;
             else
@@ -182,121 +203,143 @@ namespace SchoolPlanner.Entities {
         }
 
 
-        public void RemoveDictionaryItem(string dictionaryName, string item) {
-            switch(dictionaryName) {
+        public void RemoveDictionaryItem(string dictionaryName, string item)
+        {
+            switch (dictionaryName)
+            {
                 case "teachers":
                     schoolData.teachers.Remove(item);
                     RemoveTeacherActivities(item);
-                break;
+                    break;
                 case "rooms":
                     schoolData.rooms.Remove(item);
                     RemoveRoomActivities(item);
-                break;
+                    break;
                 case "classes":
                     schoolData.classes.Remove(item);
                     RemoveClassActivities(item);
-                break;
+                    break;
                 case "groups":
                     schoolData.groups.Remove(item);
                     RemoveGroupActivities(item);
-                break;
+                    break;
                 default:
-                break;
+                    break;
             }
             SerializeData();
         }
 
-        public SelectList GetGroups() {
+        public SelectList GetGroups()
+        {
             IEnumerable<SelectListItem> groupsItems = schoolData.groups.Select(m => new SelectListItem { Text = m, Value = m });
-            return new SelectList(groupsItems, "Value" , "Text");
+            return new SelectList(groupsItems, "Value", "Text");
         }
 
-        public SelectList GetTeachers() {
+        public SelectList GetTeachers()
+        {
             IEnumerable<SelectListItem> teacherItems = schoolData.teachers.Select(m => new SelectListItem { Text = m, Value = m });
-            return new SelectList(teacherItems, "Value" , "Text");
+            return new SelectList(teacherItems, "Value", "Text");
         }
 
-        public SelectList GetClasses() {
+        public SelectList GetClasses()
+        {
             IEnumerable<SelectListItem> classesItems = schoolData.classes.Select(m => new SelectListItem { Text = m, Value = m });
-            return new SelectList(classesItems, "Value" , "Text");
+            return new SelectList(classesItems, "Value", "Text");
         }
 
-        public SelectList GetRooms() {
+        public SelectList GetRooms()
+        {
             IEnumerable<SelectListItem> roomsItems = schoolData.rooms.Select(m => new SelectListItem { Text = m, Value = m });
-            return new SelectList(roomsItems, "Value" , "Text");
+            return new SelectList(roomsItems, "Value", "Text");
         }
 
-        private void EditTeacher(string oldTeacherName, string newTeacherName) {
+        private void EditTeacher(string oldTeacherName, string newTeacherName)
+        {
             if (!schoolData.teachers.Contains(oldTeacherName) || schoolData.teachers.Contains(newTeacherName))
                 return;
 
-            schoolData.teachers[schoolData.teachers.FindIndex(i => i.Equals(oldTeacherName))] =  newTeacherName;
+            schoolData.teachers[schoolData.teachers.FindIndex(i => i.Equals(oldTeacherName))] = newTeacherName;
 
-            foreach (var activity in schoolData.activities) {
+            foreach (var activity in schoolData.activities)
+            {
                 if (activity.teacher == oldTeacherName)
                     activity.teacher = newTeacherName;
             }
         }
 
-        private void EditRoom(string oldRoomName, string newRoomName) {
+        private void EditRoom(string oldRoomName, string newRoomName)
+        {
             if (!schoolData.rooms.Contains(oldRoomName) || schoolData.rooms.Contains(newRoomName))
                 return;
 
-            schoolData.rooms[schoolData.rooms.FindIndex(i => i.Equals(oldRoomName))] =  newRoomName;
+            schoolData.rooms[schoolData.rooms.FindIndex(i => i.Equals(oldRoomName))] = newRoomName;
 
-            foreach (var activity in schoolData.activities) {
+            foreach (var activity in schoolData.activities)
+            {
                 if (activity.room == oldRoomName)
                     activity.room = newRoomName;
             }
         }
 
-        private void EditClass(string oldClassName, string newClassName) {
+        private void EditClass(string oldClassName, string newClassName)
+        {
             if (!schoolData.classes.Contains(oldClassName) || schoolData.classes.Contains(newClassName))
                 return;
 
-            schoolData.classes[schoolData.classes.FindIndex(i => i.Equals(oldClassName))] =  newClassName;
+            schoolData.classes[schoolData.classes.FindIndex(i => i.Equals(oldClassName))] = newClassName;
 
-            foreach (var activity in schoolData.activities) {
+            foreach (var activity in schoolData.activities)
+            {
                 if (activity.teacher == oldClassName)
                     activity.teacher = newClassName;
             }
         }
 
-        private void EditGroup(string oldGroupName, string newGroupName) {
+        private void EditGroup(string oldGroupName, string newGroupName)
+        {
             if (!schoolData.groups.Contains(oldGroupName) || schoolData.groups.Contains(newGroupName))
                 return;
 
-            schoolData.groups[schoolData.groups.FindIndex(i => i.Equals(oldGroupName))] =  newGroupName;
+            schoolData.groups[schoolData.groups.FindIndex(i => i.Equals(oldGroupName))] = newGroupName;
 
-            foreach (var activity in schoolData.activities.ToList()) {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.group == oldGroupName)
                     activity.group = newGroupName;
             }
         }
 
-        private void RemoveTeacherActivities(string teacher) {
-            foreach (var activity in schoolData.activities.ToList()) {
+        private void RemoveTeacherActivities(string teacher)
+        {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.teacher == teacher)
                     schoolData.activities.Remove(activity);
             }
         }
 
-        private void RemoveRoomActivities(string room) {
-            foreach (var activity in schoolData.activities.ToList()) {
+        private void RemoveRoomActivities(string room)
+        {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.room == room)
                     schoolData.activities.Remove(activity);
             }
         }
 
-        private void RemoveClassActivities(string clas) {
-            foreach (var activity in schoolData.activities.ToList()) {
+        private void RemoveClassActivities(string clas)
+        {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.clas == clas)
                     schoolData.activities.Remove(activity);
             }
         }
 
-        private void RemoveGroupActivities(string group) {
-            foreach (var activity in schoolData.activities.ToList()) {
+        private void RemoveGroupActivities(string group)
+        {
+            foreach (var activity in schoolData.activities.ToList())
+            {
                 if (activity.group == group)
                     schoolData.activities.Remove(activity);
             }

@@ -39,16 +39,18 @@ namespace SchoolPlanner.Controllers
         }
 
         public IActionResult UpdateRoom(string room) {
-            return RedirectToAction(nameof(Index), new { room });
+            if (String.IsNullOrEmpty(room))
+                return RedirectToAction("Index");
+            return RedirectToAction("Index", new {room = room});
         }
 
         [HttpPost]
         public IActionResult SaveDictionary(List<string> items, string dictionary) {
             if (items != null && items.Count != 0 && String.IsNullOrEmpty(dictionary)) {
                 plannerData.SaveDictionary(dictionary, items);
-                return RedirectToAction(nameof(EditDictionary), new {dictionary=dictionary});
+                return RedirectToAction("EditDictionary", new {dictionary=dictionary});
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -62,15 +64,10 @@ namespace SchoolPlanner.Controllers
 
         public IActionResult UnassignEntry(string room, int? slot, string day) {
             if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
 
             plannerData.RemoveActivity(room, slot.Value, day);
             return RedirectToAction("Index", new {room = room});
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         public IActionResult EditDictionary(string dictionary)
@@ -113,12 +110,12 @@ namespace SchoolPlanner.Controllers
             else
                 plannerData.EditDictionaryItem(dictionary, editedItem, item);
 
-            return RedirectToAction(nameof(EditDictionary), new {dictionary = dictionary});
+            return RedirectToAction("EditDictionary", new {dictionary = dictionary});
         }
 
         public IActionResult RemoveDictionaryItem(string item, string dictionary) {
             plannerData.RemoveDictionaryItem(dictionary, item);
-            return RedirectToAction(nameof(EditDictionary), new {dictionary = dictionary});
+            return RedirectToAction("EditDictionary", new {dictionary = dictionary});
         }
 
         public IActionResult EditEntry(string room, int? slot, string day)
@@ -148,10 +145,9 @@ namespace SchoolPlanner.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(Exception ex)
+        public IActionResult Error()
         {
-            _logger.LogError(ex.Message);
-            return View(new ErrorViewModel { message = ex.Message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
     }
