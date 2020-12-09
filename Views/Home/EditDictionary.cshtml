@@ -2,41 +2,39 @@
 
 @{
     foreach(var item in Model.dictionaryItem) {
-
-        <form id=@item method="post" action=@Url.Action("RemoveDictionaryItem", new {dictionary=@Model.dictionaryName, item = @item})></form>
+        <form id=@item method="post" action=@Url.Action("RemoveDictionaryItem", new {dictionary=@Model.dictionaryName, item=@item})></form>
     }
 }
 
 @{
     foreach(var item in Model.dictionaryItem) {
-
-        <form id="edit" method="post" action=@Url.Action("EditDictionaryItem", new {dictionary=@Model.dictionaryName, item=@item})></form>
+        <form id="@item@item" name="edit" method="post" action=@Url.Action("EditDictionaryItem", new {dictionary=@Model.dictionaryName, item=@item})></form>
     }
 }
 
 @using (Html.BeginForm("SaveDictionary", "Home", FormMethod.Post, new {id="data"})) {
 
     <label for="dictionaryName">Dictionary: </label>
-    <input class="input-data" type="text" id="dictionary" name="dictionary" style="width:120px" value=@Model.dictionaryName readonly>
+    <input class="input-data" type="text" style="font-weight: bold" id="dictionary" name="dictionary" style="width:120px" value=@Model.dictionaryName readonly>
     <table class="table">
         @* <tr> *@
             @{
                 foreach(var item in Model.dictionaryItem) {
                     <tr>
-                        <th>
+                        <td style="width:60%">
                             <label for="items"></label>
                             <input class="input-data" type="text" id="items" name=items value=@item multiple form=@item readonly>
-                        </th>
-                        <th>
+                        </td>
+                        <td style="width:20%">
                             <div>
-                                <button type="submit" form=@item class="button button3" style="width:100px">Remove</button>
+                                <button type="submit" form=@item class="button button3" style="width:80%">Remove</button>
                             </div>
-                        </th>
-                        <th>
+                        </td>
+                        <td style="width:20%">
                             <div>
-                                <button type="submit" form="edit" class="button button2" style="width:100px">Edit</button>
+                                <button type="submit" form="@item@item" class="button button2" style="width:80%">Edit</button>
                             </div>
-                        </th>
+                        </td>
                     </tr>
                 }
             }
@@ -47,13 +45,12 @@
 }
 
 <div>
-    <input class="button button1" type="submit" value="Save" form="data">
-    <a href=@Url.Action("EditDictionaryItem", new {dictionary=@Model.dictionaryName})>
-        <button class="button button2" method="post" class="button">Add</button>
-    </a>
-
     <a href=@Url.Action("Index")>
         <button class="button button3" method="post" class="button">Cancel</button>
     </a>
+    <a href=@Url.Action("EditDictionaryItem", new {dictionary=@Model.dictionaryName})>
+        <button class="button button2" method="post" class="button">Add</button>
+    </a>
+    <input class="button button1" style="float: right" type="submit" value="Save" form="data">
 </div>
 

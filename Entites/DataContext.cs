@@ -13,14 +13,19 @@ namespace SchoolPlanner.Entities {
 
         public DataContext() {
             DeserializeData();
-            CheckDataCorrectness();
         }
 
         public void DeserializeData() {
             if (File.Exists(jsonFile)) {
                 var jsonData = File.ReadAllText(jsonFile);
+                if (String.IsNullOrEmpty(jsonData)) {
+                    schoolData = new SchoolData();
+                    return;
+                }
+
                 try {
                     schoolData = JsonSerializer.Deserialize<SchoolData>(jsonData);
+                    CheckDataCorrectness();
                 } catch (JsonException) {
                     schoolData = new SchoolData();
                 }
@@ -51,7 +56,7 @@ namespace SchoolPlanner.Entities {
             return null;
         }
 
-        public string getGroupByRoomAndSlot(string roomName, int slot, string day) {
+        public string GetGroupByRoomAndSlot(string roomName, int slot, string day) {
             ActivityData activity = getActivity(roomName, slot, day);
 
             if (activity.group != null)
@@ -61,7 +66,7 @@ namespace SchoolPlanner.Entities {
 
         }
 
-        public bool removeActivity(string room, int slot, string day) {
+        public bool RemoveActivity(string room, int slot, string day) {
             foreach (var activity in schoolData.activities) {
                 if (activity.room == room && activity.slot == slot && activity.day == day) {
                     schoolData.activities.Remove(activity);
@@ -73,7 +78,7 @@ namespace SchoolPlanner.Entities {
             return false;
         }
 
-        public void addActivity(string room, int slot, string day, string group, string clas, string teacher) {
+        public void AddActivity(string room, int slot, string day, string group, string clas, string teacher) {
             ValidateNewActivity(room, slot, day, group, clas, teacher);
             schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
             SerializeData();
@@ -201,22 +206,22 @@ namespace SchoolPlanner.Entities {
             SerializeData();
         }
 
-        public SelectList getGroups() {
+        public SelectList GetGroups() {
             IEnumerable<SelectListItem> groupsItems = schoolData.groups.Select(m => new SelectListItem { Text = m, Value = m });
             return new SelectList(groupsItems, "Value" , "Text");
         }
 
-        public SelectList getTeachers() {
+        public SelectList GetTeachers() {
             IEnumerable<SelectListItem> teacherItems = schoolData.teachers.Select(m => new SelectListItem { Text = m, Value = m });
             return new SelectList(teacherItems, "Value" , "Text");
         }
 
-        public SelectList getClasses() {
+        public SelectList GetClasses() {
             IEnumerable<SelectListItem> classesItems = schoolData.classes.Select(m => new SelectListItem { Text = m, Value = m });
             return new SelectList(classesItems, "Value" , "Text");
         }
 
-        public SelectList getRooms() {
+        public SelectList GetRooms() {
             IEnumerable<SelectListItem> roomsItems = schoolData.rooms.Select(m => new SelectListItem { Text = m, Value = m });
             return new SelectList(roomsItems, "Value" , "Text");
         }

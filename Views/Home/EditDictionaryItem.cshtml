@@ -15,12 +15,12 @@
 
 @using (Html.BeginForm("SaveDictionaryItem", "Home", getEventParameters())) {
     <label for="item" value="Save"></label>
-    <input type="text" id="item" name="item" style="width:400px" value=@Context.Request.Query["item"].ToString()>
+    <input type="text" id="item" name="item" style="width:100%" value=@Context.Request.Query["item"].ToString()>
     <div>
-        <input class="button button1" type="submit" Save>
         <a href=@Url.Action("EditDictionary", new {dictionary=Context.Request.Query["dictionary"].ToString()})>
-        <button method="post" class="button button3">Cancel</button>
+            <button method="post" class="button button3">Cancel</button>
         </a>
+        <input class="button button1" style="float:right" type="submit" value="Save">
     </div>
 }
 

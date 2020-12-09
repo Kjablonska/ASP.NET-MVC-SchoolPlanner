@@ -119,29 +119,37 @@ td {
 }
 
 .button1 {
-  background-color: rgb(229, 247, 218);
+  background-color: rgb(241, 255, 233);
   color: black;
-  border: 2px solid #4CAF50; /* Green */
+  border: 2px solid #A1C349; /* Green */
   width: 80px;
+  margin:5px;
 }
 
 .button2 {
-  background-color: rgb(230, 241, 248); 
-  color: black; 
-  border: 2px solid #008CBA;
+  background-color: rgb(241, 246, 250); 
+  color: black;
+  border: 2px solid #95D9DA;
   width: 80px;
+  margin:5px;
 }
 
 .button3 {
-  background-color: rgb(255, 228, 228); 
-  color: black; 
-  border: 2px solid #f44336;
+  background-color: rgb(255, 242, 242); 
+  color: black;
+  border: 2px solid #B98389;
   width: 80px;
+  margin:5px;
 }
 
 .button5 {
-  background-color: rgb(226, 223, 223);
+  background-color: rgb(243, 240, 235);
   color: black;
   border: 2px solid #555555;
   width: 80px;
+  margin:5px;
+}
+
+div button {
+  float: right;
 }

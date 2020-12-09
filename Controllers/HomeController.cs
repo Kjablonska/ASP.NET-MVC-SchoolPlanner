@@ -28,12 +28,12 @@ namespace SchoolPlanner.Controllers
             SchoolPlannerViewModel schoolTimeTable = new SchoolPlannerViewModel();
             schoolTimeTable.roomData = plannerData.schoolData;
 
-            ViewBag.Rooms = new SelectList(plannerData.getRooms(), "Value" , "Text");
+            ViewBag.Rooms = new SelectList(plannerData.GetRooms(), "Value" , "Text");
 
             if (room != null)
                 schoolTimeTable.currentRoom = room;
             else
-                schoolTimeTable.currentRoom = plannerData.getRooms().Any() ?  plannerData.getRooms().First().Value : string.Empty;
+                schoolTimeTable.currentRoom = plannerData.GetRooms().Any() ?  plannerData.GetRooms().First().Value : string.Empty;
 
             return View(schoolTimeTable);
         }
@@ -56,7 +56,7 @@ namespace SchoolPlanner.Controllers
             if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue || String.IsNullOrEmpty(group) || String.IsNullOrEmpty(clas) || String.IsNullOrEmpty(teacher))
                 return RedirectToAction(nameof(Index));
 
-            plannerData.addActivity(room, slot.Value, day, group, clas, teacher);
+            plannerData.AddActivity(room, slot.Value, day, group, clas, teacher);
             return RedirectToAction("Index", new {room = room});
         }
 
@@ -64,7 +64,7 @@ namespace SchoolPlanner.Controllers
             if (String.IsNullOrEmpty(room) || String.IsNullOrEmpty(day) || !slot.HasValue)
                 return RedirectToAction(nameof(Index));
 
-            plannerData.removeActivity(room, slot.Value, day);
+            plannerData.RemoveActivity(room, slot.Value, day);
             return RedirectToAction("Index", new {room = room});
         }
 
@@ -128,9 +128,9 @@ namespace SchoolPlanner.Controllers
 
             EditEntryViewModel editEntry = new EditEntryViewModel();
 
-            editEntry.classesItems = plannerData.getClasses();
-            editEntry.groupsItems = plannerData.getGroups();
-            editEntry.teachersItems = plannerData.getTeachers();
+            editEntry.classesItems = plannerData.GetClasses();
+            editEntry.groupsItems = plannerData.GetGroups();
+            editEntry.teachersItems = plannerData.GetTeachers();
 
             ActivityData selectedActivity = plannerData.getActivity(room, slot.Value, day);
 

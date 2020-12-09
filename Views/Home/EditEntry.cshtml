@@ -70,15 +70,15 @@
 }
 
 <div>
-    <input class="button button1" type="submit" value="Save" form="data">
+    <a href=@Url.Action("Index", new {room = @Context.Request.Query["room"].ToString()})>
+        <button method="post" class="button button3">Cancel</button>
+    </a>
 
-     @if (!checkIfEmptyEntry()) {
+    @if (!checkIfEmptyEntry()) {
         <a href=@Url.Action("UnassignEntry", "Home", getEventParameters())>
             <button method="post" class="button button5" name=Unassign>Unassign</button>
         </a>
     }
 
-    <a href=@Url.Action("Index", new {room = @Context.Request.Query["room"].ToString()})>
-        <button method="post" class="button button3">Cancel</button>
-    </a>
+    <input class="button button1" style="float:right" type="submit" value="Save" form="data">
 </div>

@@ -20,7 +20,6 @@
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.TagHelpers.output.cache
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/SchoolPlanner.RazorCoreGenerate.cache
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/Index.cshtml.g.cs
-/home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Home/Privacy.cshtml.g.cs
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Shared/Error.cshtml.g.cs
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_Layout.cshtml.g.cs
 /home/kj/projects/elka/EGUI/lab2_ASP/SchoolPlanner/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs

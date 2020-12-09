@@ -41,7 +41,7 @@ Room
 <div class="table-responsive col-container" id="schoolTable">
     <table class="table table-bordered">
         <thead>
-            <tr>
+            <tr bgcolor="#E8E9EB">
                 @{
                     foreach (var col in ColumnsHeaders)
                     {
@@ -57,7 +57,7 @@ Room
                 @{
                     for (var slot = 0; slot < RowsHeaders.Length; slot++)
                     {
-                        <th>
+                        <th bgcolor="#E8E9EB">
                             @RowsHeaders[slot]
                             @{
                                 for (var day = 1; day < ColumnsHeaders.Length; day++) {
