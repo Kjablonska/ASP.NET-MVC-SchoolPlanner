@@ -105,6 +105,9 @@ namespace SchoolPlanner.Controllers
         }
 
         public IActionResult SaveDictionaryItem(string editedItem, string item, string dictionary) {
+            if (String.IsNullOrEmpty(item))
+                return RedirectToAction("EditDictionary", new {dictionary = dictionary});
+
             if (String.IsNullOrEmpty(editedItem))
                 plannerData.AddDictionaryItem(dictionary, item);
             else

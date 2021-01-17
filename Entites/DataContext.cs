@@ -89,6 +89,9 @@ namespace SchoolPlanner.Entities
         public void AddActivity(string room, int slot, string day, string group, string clas, string teacher)
         {
             ValidateNewActivity(room, slot, day, group, clas, teacher);
+
+            // Removes activity which is currently assigned to the edited slot, room and day so as data could be properly owerriten (otherwise the edited entry could be assigned to more than one activity). In case when the slot is being added new activity nothing will be removed.
+            RemoveActivity(room, slot, day);
             schoolData.activities.Add(new ActivityData(room, slot, day, group, clas, teacher));
             SerializeData();
         }
