@@ -1,6 +1,5 @@
 # SchoolPlannerapplication built using ASP.NET MVC
-Project done for EGUI course at Warsaw University of Technology.
-Semester 20Z
+Project done for EGUI course at Warsaw University of Technology.  
 
 ## Description
 Application was built using ASP.NET MVC and Razor.  
@@ -22,3 +21,21 @@ Application was built using ASP.NET MVC and Razor.
 dotnet build; dotnet run;
 
 ## Demo  
+
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/school-planner-net.gif?raw=true)  
+
+**Main view**  
+Main view contains time table and menu. From this page the user can select dictionary to display and add/edit any timeslot on the timetable.  
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/main-view.png?raw=true)  
+
+**Activity view**  
+Activity view shows details of the selected timetable entry. It allows for edition - for already assigned entries there is a possibility to 'Unassign'.  
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/activity-view.png?raw=true)  
+
+**Dictionary view**  
+Dictionary view presents the content of the selected dictionary. It allows to entries edition/removal.  
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/dictionary-view.png?raw=true)
+
+**Edition view**
+Edition of dictionary entry view.  
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/dictionary-edit-view.png?raw=true)
