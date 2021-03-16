@@ -38,4 +38,4 @@ Dictionary view presents the content of the selected dictionary. It allows to en
 
 **Edition view**
 Edition of dictionary entry view.  
-![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/dictionary-edit-view.png?raw=true)
+![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/edit-view.png?raw=true)
