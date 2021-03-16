@@ -25,18 +25,18 @@ dotnet build; dotnet run;
 ![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/school-planner-net.gif?raw=true)  
 
 **Main view**  
-  
 Main view contains time table and menu. From this page the user can select dictionary to display and add/edit any timeslot on the timetable.  
+  
 ![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/main-view.png?raw=true)  
 
 **Activity view**  
-  
 Activity view shows details of the selected timetable entry. It allows for edition - for already assigned entries there is a possibility to 'Unassign'.  
+  
 ![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/activity-view.png?raw=true)  
 
 **Dictionary view**  
-  
 Dictionary view presents the content of the selected dictionary. It allows to entries edition/removal.  
+  
 ![alt text](https://github.com/Kjablonska/ASP.NET-MVC-SchoolPlanner/blob/master/assets/dictionary-view.png?raw=true)
 
 **Edition view**  
