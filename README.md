@@ -18,7 +18,9 @@ Application was built using ASP.NET MVC and Razor.
   * Input data can be empty.
 
 ## Build&run  
+```sh
 dotnet build; dotnet run;
+```
 
 ## Demo  
 
